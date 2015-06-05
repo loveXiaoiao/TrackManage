@@ -3,20 +3,20 @@ package com.liyi.trackmanage.service;
 public class Knapsack {
     private int[] value, weight;
     private int length;
-    private int volume, bestp, cp, cw;
+    private int volume, bestValue, currentValue, currentWeight;
     private int result[]; //记录可选的会议
-    private int[] cx;
+    private int[] currentResult;
 
     public Knapsack(int value[], int weight[], int volume) {
         this.value = value;
         this.weight = weight;
         this.length = value.length - 1;
         this.volume = volume;
-        this.cp = 0;
-        this.cw = 0;
-        this.bestp = 0;
+        this.currentValue = 0;
+        this.currentWeight = 0;
+        this.bestValue = 0;
         result = new int[weight.length];
-        cx = new int[value.length];
+        currentResult = new int[value.length];
     }
 
     public int[] execute() {
@@ -26,22 +26,22 @@ public class Knapsack {
 
     private void backtrack(int i) {
         if (i > length) {             //判断是否到达了叶子节点
-            if (cp > bestp) {
+            if (currentValue > bestValue) {
                 for (int j = 0; j < result.length; j++)
-                    result[j] = cx[j];
-                bestp = cp;
+                    result[j] = currentResult[j];
+                bestValue = currentValue;
             }
             return;
         }
-        if (cw + weight[i] <= volume) {//搜索右子树
-            cx[i] = 1;
-            cw += weight[i];
-            cp += value[i];
+        if (currentWeight + weight[i] <= volume) {//搜索右子树
+        	currentResult[i] = 1;
+            currentWeight += weight[i];
+            currentValue += value[i];
             backtrack(i + 1);
-            cw -= weight[i];
-            cp -= value[i];
+            currentWeight -= weight[i];
+            currentValue -= value[i];
         }
-        cx[i] = 0;
+        currentResult[i] = 0;
         backtrack(i + 1); //检查左子树
     }
 }
