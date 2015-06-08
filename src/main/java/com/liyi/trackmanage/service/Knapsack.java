@@ -27,14 +27,13 @@ public class Knapsack {
     private void backtrack(int i) {
         if (i > length) {             //判断是否到达了叶子节点
             if (currentValue > bestValue) {
-                for (int j = 0; j < result.length; j++)
-                    result[j] = currentResult[j];
+                System.arraycopy(currentResult, 0, result, 0, result.length);
                 bestValue = currentValue;
             }
             return;
         }
         if (currentWeight + weight[i] <= volume) {//搜索右子树
-        	currentResult[i] = 1;
+            currentResult[i] = 1;
             currentWeight += weight[i];
             currentValue += value[i];
             backtrack(i + 1);
